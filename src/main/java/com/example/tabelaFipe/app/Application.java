@@ -23,7 +23,9 @@ public class Application {
         urlBase += opcaoVeiculo.toLowerCase();
         urlBase += "/marcas";
 
-        var json = conversor.converteDados(consumoApi.consumir(urlBase), DadosMarca.class);
+        var json = conversor.obterLista(consumoApi.consumir(urlBase), DadosMarca.class);
+
+        System.out.println(json.toString());
 
     }
 }
