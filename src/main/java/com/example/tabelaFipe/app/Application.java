@@ -41,5 +41,18 @@ public class Application {
         var jsonModelos = consumoApi.consumir(urlBase);
         DadosModelo dadosModelo = conversor.converteDados(jsonModelos, DadosModelo.class);
         System.out.println(dadosModelo.toString());
+
+        System.out.println("Digite o nome do modelo que deseja consultar: ");
+        String nomeModelo = teclado.nextLine();
+        List<Modelo> modelosEncontrados;
+        modelosEncontrados = dadosModelo.buscarNomeModelo(nomeModelo);
+        modelosEncontrados.forEach(System.out::println);
+
+        System.out.println("Digite o código do modelo escolhido: ");
+        Integer codigoModelo = teclado.nextInt();
+        urlBase += "/" + codigoModelo + "/anos";
+
+
+
     }
 }
