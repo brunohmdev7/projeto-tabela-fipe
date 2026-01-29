@@ -1,5 +1,6 @@
 package com.example.tabelaFipe.app;
 
+import com.example.tabelaFipe.model.DadosAno;
 import com.example.tabelaFipe.model.DadosMarca;
 import com.example.tabelaFipe.model.DadosModelo;
 import com.example.tabelaFipe.model.Modelo;
@@ -48,11 +49,11 @@ public class Application {
         modelosEncontrados = dadosModelo.buscarNomeModelo(nomeModelo);
         modelosEncontrados.forEach(System.out::println);
 
+        // código do modelo
         System.out.println("Digite o código do modelo escolhido: ");
         Integer codigoModelo = teclado.nextInt();
         urlBase += "/" + codigoModelo + "/anos";
-
-
+        // desenvolver retorno dos modelos disponíveis
 
     }
 }
