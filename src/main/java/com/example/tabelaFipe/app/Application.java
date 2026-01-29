@@ -1,9 +1,13 @@
 package com.example.tabelaFipe.app;
 
 import com.example.tabelaFipe.model.DadosMarca;
+import com.example.tabelaFipe.model.DadosModelo;
+import com.example.tabelaFipe.model.Modelo;
 import com.example.tabelaFipe.service.ConsumoApi;
 import com.example.tabelaFipe.service.ConverteDados;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
@@ -23,9 +27,19 @@ public class Application {
         urlBase += opcaoVeiculo.toLowerCase();
         urlBase += "/marcas";
 
-        var json = conversor.obterLista(consumoApi.consumir(urlBase), DadosMarca.class);
+        var jsonMarcas = conversor.obterLista(consumoApi.consumir(urlBase), DadosMarca.class);
 
-        System.out.println(json.toString());
+        System.out.println(jsonMarcas.toString());
 
+        System.out.println("Digite o código da marca escolhida: \n");
+
+        String codigoMarca = teclado.nextLine();
+        urlBase += "/" + codigoMarca + "/modelos";
+
+        List<DadosModelo> listaModelos = new ArrayList<>();
+
+        var jsonModelos = consumoApi.consumir(urlBase);
+        DadosModelo dadosModelo = conversor.converteDados(jsonModelos, DadosModelo.class);
+        System.out.println(dadosModelo.toString());
     }
 }
