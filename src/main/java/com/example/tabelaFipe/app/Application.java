@@ -1,9 +1,6 @@
 package com.example.tabelaFipe.app;
 
-import com.example.tabelaFipe.model.DadosAno;
-import com.example.tabelaFipe.model.DadosMarca;
-import com.example.tabelaFipe.model.DadosModelo;
-import com.example.tabelaFipe.model.Modelo;
+import com.example.tabelaFipe.model.*;
 import com.example.tabelaFipe.service.ConsumoApi;
 import com.example.tabelaFipe.service.ConverteDados;
 
@@ -27,18 +24,12 @@ public class Application {
         String opcaoVeiculo =  teclado.nextLine();
         urlBase += opcaoVeiculo.toLowerCase();
         urlBase += "/marcas";
-
         var jsonMarcas = conversor.obterLista(consumoApi.consumir(urlBase), DadosMarca.class);
-
         System.out.println(jsonMarcas.toString());
 
         System.out.println("Digite o código da marca escolhida: \n");
-
         String codigoMarca = teclado.nextLine();
         urlBase += "/" + codigoMarca + "/modelos";
-
-        List<DadosModelo> listaModelos = new ArrayList<>();
-
         var jsonModelos = consumoApi.consumir(urlBase);
         DadosModelo dadosModelo = conversor.converteDados(jsonModelos, DadosModelo.class);
         System.out.println(dadosModelo.toString());
@@ -49,11 +40,25 @@ public class Application {
         modelosEncontrados = dadosModelo.buscarNomeModelo(nomeModelo);
         modelosEncontrados.forEach(System.out::println);
 
-        // código do modelo
         System.out.println("Digite o código do modelo escolhido: ");
-        Integer codigoModelo = teclado.nextInt();
+        int codigoModelo = teclado.nextInt();
+        teclado.nextLine();
         urlBase += "/" + codigoModelo + "/anos";
-        // desenvolver retorno dos modelos disponíveis
+        var jsonAnos = consumoApi.consumir(urlBase);
+        List<CodigoAno> codigosAnos = conversor.obterLista(jsonAnos, CodigoAno.class);
+        List<DadosVeiculo> veiculosSelecionados = new ArrayList<>();
+        String resetUrl = urlBase;
+        for (CodigoAno codigoAno : codigosAnos) {
+            urlBase = resetUrl;
+            urlBase += "/" + codigoAno;
+            var jsonVeiculo = consumoApi.consumir(urlBase);
+            DadosVeiculo dadosVeiculo = conversor.converteDados(jsonVeiculo, DadosVeiculo.class);
+            veiculosSelecionados.add(dadosVeiculo);
+        }
+
+        veiculosSelecionados.forEach(System.out::println);
+
+
 
     }
 }
